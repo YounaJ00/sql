@@ -82,6 +82,15 @@ where e.job = (
     from emp
     where ename = 'ALLEN');
 
+
+-- version 2     
+select job, empno, ename, sal, deptno, (select dname from dept where deptno=emp.deptno) dname
+from emp 
+where job = (
+    select job 
+    from emp 
+    where ename = 'ALLEN');
+
 -- 되새김 2
 select e.empno, e.ename, d.dname, e.hiredate, d.loc, e.sal, s.grade
 from emp e
@@ -94,6 +103,15 @@ where e.sal > (
     from emp
 )
 order by e.sal desc, e.empno asc;
+
+-- version 2
+select empno, ename, dname, hiredate, loc, sal, 
+(select grade from salgrade where e.sal between losal and hisal) grade
+from emp e
+join dept d
+  on e.deptno = d.deptno
+where sal > (select avg(sal) from emp) 
+order by sal desc, empno asc;
 
 -- 되새김 3
 select e.empno,
